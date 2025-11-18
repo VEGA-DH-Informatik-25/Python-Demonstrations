@@ -18,7 +18,7 @@ pygame.display.set_caption("Demo 2: Variables & Movement")
 # Variables with different data types
 x = 50              # Integer
 y = 300.0           # Float
-speed = 2           # Integer
+speed = 10           # Integer
 direction = 1       # Integer (1 or -1)
 color = (255, 0, 0) # Tuple (RGB)
 radius = 30         # Integer
