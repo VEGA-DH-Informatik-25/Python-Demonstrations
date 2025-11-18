@@ -44,6 +44,52 @@ class Ball:
     def draw(self, surface):
         """Method to draw the ball"""
         pygame.draw.circle(surface, self.color, (int(self.x), int(self.y)), self.radius)
+    
+    def check_collision(self, other):
+        """Check if this ball collides with another ball"""
+        # Calculate distance between centers
+        dx = self.x - other.x
+        dy = self.y - other.y
+        distance = (dx ** 2 + dy ** 2) ** 0.5
+        
+        # Check if balls are overlapping
+        return distance < self.radius + other.radius
+    
+    def handle_collision(self, other):
+        """Handle collision physics with another ball"""
+        # Calculate angle between balls
+        dx = other.x - self.x
+        dy = other.y - self.y
+        distance = (dx ** 2 + dy ** 2) ** 0.5
+        
+        if distance == 0:
+            return
+        
+        # Normalize direction
+        dx /= distance
+        dy /= distance
+        
+        # Calculate relative velocity
+        dvx = self.speed_x - other.speed_x
+        dvy = self.speed_y - other.speed_y
+        
+        # Calculate dot product
+        dot_product = dvx * dx + dvy * dy
+        
+        # Only collide if balls are moving towards each other
+        if dot_product > 0:
+            # Simple elastic collision - exchange velocities along collision axis
+            self.speed_x -= dot_product * dx
+            self.speed_y -= dot_product * dy
+            other.speed_x += dot_product * dx
+            other.speed_y += dot_product * dy
+            
+            # Separate balls to prevent overlap
+            overlap = self.radius + other.radius - distance
+            self.x -= overlap * dx * 0.5
+            self.y -= overlap * dy * 0.5
+            other.x += overlap * dx * 0.5
+            other.y += overlap * dy * 0.5
 
 # Create list of Ball objects
 balls = []
@@ -66,6 +112,15 @@ while running:
     # Call methods on each Ball object
     for ball in balls:
         ball.move()    # Call move method
+    
+    # Check for collisions between all pairs of balls
+    for i in range(len(balls)):
+        for j in range(i + 1, len(balls)):
+            if balls[i].check_collision(balls[j]):
+                balls[i].handle_collision(balls[j])
+    
+    # Draw all balls
+    for ball in balls:
         ball.draw(screen)  # Call draw method
     
     # Display info
