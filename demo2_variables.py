@@ -30,6 +30,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                speed = min(speed + 1, 1000)  # Increase speed, max 1000
+            elif event.key == pygame.K_DOWN:
+                if speed > 0:
+                    speed -= 1  # Decrease speed by 1, min 0
 
     # Mathematical operations - update position
     x = x + (speed * direction)
