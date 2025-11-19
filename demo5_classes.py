@@ -96,6 +96,9 @@ balls = []
 for i in range(5):
     balls.append(Ball(random.randint(100, 700), random.randint(100, 500)))
 
+# Variable to control how many balls are added per click
+balls_per_click = 50
+
 clock = pygame.time.Clock()
 running = True
 
@@ -104,8 +107,10 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            # Create new Ball object at mouse position
-            balls.append(Ball(event.pos[0], event.pos[1]))
+            # Create multiple Ball objects at mouse position based on balls_per_click
+            for _ in range(balls_per_click):
+                balls.append(Ball(event.pos[0], event.pos[1]))
+            
 
     screen.fill((255, 255, 255))
     
@@ -125,7 +130,7 @@ while running:
     
     # Display info
     font = pygame.font.Font(None, 30)
-    text = font.render(f"Balls: {len(balls)} (Click to add)", True, (0, 0, 0))
+    text = font.render(f"Balls: {len(balls)} (Click to add {balls_per_click})", True, (0, 0, 0))
     screen.blit(text, (10, 10))
     
     pygame.display.flip()

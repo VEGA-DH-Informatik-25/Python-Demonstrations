@@ -33,7 +33,7 @@ class Bird:
         self.radius = 15
         self.velocity = 0
         self.gravity = 0.5
-        self.jump_strength = -5
+        self.jump_strength = -7
     
     def jump(self):
         """Make the bird jump"""
